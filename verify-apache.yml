@@ -1,5 +1,5 @@
 ---
-- hosts: 10.127.41.166
+- hosts: localhost
   vars:
     http_port: 80
     max_clients: 200

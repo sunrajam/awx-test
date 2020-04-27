@@ -19,31 +19,10 @@
       dest: /var/www/html/index.html
     notify:
     - restart apache
-  - name: check if vhost is present
-    uri:
-      url: "{{ jk_server_name }}/{{ jk_rest_api_url }}"
-      method: GET
-      user: "{{ jk_auth_user }}"
-      password: "{{ jk_auth_password }}"
-      force_basic_auth: yes
-      status_code: 200,404
-      timeout: 10
-    register: request_vhost
-  - name: debug
-    debug:
-      var: request_vhost
-  - name: create vhost
-    uri:
-      url: "{{ jk_server_name }}/{{ jk_rest_api_url }}"
-      method: PUT
-      HEADER_Content-Type: "application/json"
-      user: "{{ jk_auth_user }}"
-      password: "{{ jk_auth_password }}"
-      force_basic_auth: yes
-      status_code: 204
-      timeout: 10
-    when:
-      - request_vhost.status == 404
+ - name:
+   shell:  "curl -f -H 'Content-Type: application/json' -XPOST --user admin:{{ jk_auth_password }} http://10.127.41.162/kyc/rest/getDelayedHelloWorld/deviceId/1/delay/10"
+   when: inventory_hostname == 'localhost'
+  
   - name: ensure apache is running
     service:
       name: httpd

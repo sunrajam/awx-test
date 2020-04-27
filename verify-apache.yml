@@ -30,20 +30,20 @@
       timeout: 10
     register: request_vhost
   - name: debug
-      debug:
-        var: request_vhost
+    debug:
+      var: request_vhost
   - name: create vhost
-      uri:
-        url: "{{ jk_server_name }}/{{ jk_rest_api_url }}"
-        method: PUT
-        HEADER_Content-Type: "application/json"
-        user: "{{ jk_auth_user }}"
-        password: "{{ jk_auth_password }}"
-        force_basic_auth: yes
-        status_code: 204
-        timeout: 10
-      when:
-        - request_vhost.status == 404
+    uri:
+      url: "{{ jk_server_name }}/{{ jk_rest_api_url }}"
+      method: PUT
+      HEADER_Content-Type: "application/json"
+      user: "{{ jk_auth_user }}"
+      password: "{{ jk_auth_password }}"
+      force_basic_auth: yes
+      status_code: 204
+      timeout: 10
+    when:
+      - request_vhost.status == 404
   - name: ensure apache is running
     service:
       name: httpd

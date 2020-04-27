@@ -19,7 +19,7 @@
       dest: /var/www/html/index.html
     notify:
     - restart apache
-  - name: check if sensu vhost is present
+  - name: check if vhost is present
       uri:
         url: "{{ jk_server_name }}/{{ jk_rest_api_url }}"
         method: GET

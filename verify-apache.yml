@@ -20,15 +20,15 @@
     notify:
     - restart apache
   - name: check if vhost is present
-      uri:
-        url: "{{ jk_server_name }}/{{ jk_rest_api_url }}"
-        method: GET
-        user: "{{ jk_auth_user }}"
-        password: "{{ jk_auth_password }}"
-        force_basic_auth: yes
-        status_code: 200,404
-        timeout: 10
-      register: request_vhost
+    uri:
+      url: "{{ jk_server_name }}/{{ jk_rest_api_url }}"
+      method: GET
+      user: "{{ jk_auth_user }}"
+      password: "{{ jk_auth_password }}"
+      force_basic_auth: yes
+      status_code: 200,404
+      timeout: 10
+    register: request_vhost
   - name: debug
       debug:
         var: request_vhost

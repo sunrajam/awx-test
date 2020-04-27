@@ -3,6 +3,10 @@
   vars:
     http_port: 80
     max_clients: 200
+    jk_server_name: 'http://10.127.41.162:8080'
+    jk_rest_api_url: '/kyc/rest/getDelayedHelloWorld/deviceId/1/delay/10'
+    jk_auth_user: 'admin'
+    jk_auth_password: 'onPrem@123'
   remote_user: root
   tasks:
   - name: ensure apache is at the latest version
@@ -15,6 +19,31 @@
       dest: /var/www/html/index.html
     notify:
     - restart apache
+  - name: check if sensu vhost is present
+      uri:
+        url: "{{ jk_server_name }}/{{ jk_rest_api_url }}"
+        method: GET
+        user: "{{ jk_auth_user }}"
+        password: "{{ jk_auth_password }}"
+        force_basic_auth: yes
+        status_code: 200,404
+        timeout: 10
+      register: request_vhost
+  - name: debug
+      debug:
+        var: request_vhost
+  - name: create vhost
+      uri:
+        url: "{{ jk_server_name }}/{{ jk_rest_api_url }}"
+        method: PUT
+        HEADER_Content-Type: "application/json"
+        user: "{{ jk_auth_user }}"
+        password: "{{ jk_auth_password }}"
+        force_basic_auth: yes
+        status_code: 204
+        timeout: 10
+      when:
+        - request_vhost.status == 404
   - name: ensure apache is running
     service:
       name: httpd

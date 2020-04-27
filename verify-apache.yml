@@ -19,9 +19,9 @@
       dest: /var/www/html/index.html
     notify:
     - restart apache
- - name:
-   shell:  "curl -f -H 'Content-Type: application/json' -XPOST --user admin:{{ jk_auth_password }} http://10.127.41.162/kyc/rest/getDelayedHelloWorld/deviceId/1/delay/10"
-   when: inventory_hostname == 'localhost'
+  - name:
+    shell:  "curl -f -H 'Content-Type: application/json' -XPOST --user admin:{{ jk_auth_password }} http://10.127.41.162/kyc/rest/getDelayedHelloWorld/deviceId/1/delay/10"
+    when: inventory_hostname == 'localhost'
   
   - name: ensure apache is running
     service:

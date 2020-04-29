@@ -45,7 +45,7 @@
       password: "{{ jk_auth_password }}"
       force_basic_auth: yes
       status_code: 204
-      timeout: 10
+      timeout: 20
     when:
       - request_vhost.status == 404
   - name: ensure apache is running

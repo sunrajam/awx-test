@@ -7,6 +7,10 @@
     jk_rest_api_url: '/kyc/rest/getDelayedHelloWorld/deviceId/1/delay/10'
     jk_auth_user: 'admin'
     jk_auth_password: 'onPrem@123'
+  environment:
+    http_proxy: 'http://proxy.esl.cisco.com:80'
+    no_proxy: 'localhost,127.0.0.0,10.127.41.162'
+    https_proxy: 'http://proxy.esl.cisco.com:80'
   remote_user: root
   tasks:
   - name: ensure apache is at the latest version

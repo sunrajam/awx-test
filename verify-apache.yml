@@ -48,13 +48,4 @@
       timeout: 10
     when:
       - request_vhost.status == 404
-  - name: ensure apache is running
-    service:
-      name: httpd
-      state: started
-  handlers:
-    - name: restart apache
-      service:
-        name: httpd
-        state: restarted
-
+ 

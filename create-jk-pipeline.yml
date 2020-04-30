@@ -4,9 +4,10 @@
     http_port: 80
     max_clients: 200
     jk_pipeline_name: 'AWX_Test_Pipeline3'
-    jk_server_name: 'https://engci-private-blr.cisco.com'
-    jk_rest_api_url: 'jenkins/cs-apjc/job/sandbox/job/Customers/job/Rakuten/createItem?name={{ jk_pipeline_name }}'
-    jk_rest_build_url: 'jenkins/cs-apjc/job/sandbox/job/Customers/job/Rakuten/job/{{ jk_pipeline_name }}/build?delay=0sec'
+    jk_server_name: 'https://engci-private-blr.cisco.com/jenkins/cs-apjc/job/sandbox/job/Customers/job/Rakuten'
+    jk_rest_api_url: 'createItem?name={{ jk_pipeline_name }}'
+    jk_rest_build_url: 'job/{{ jk_pipeline_name }}/build?delay=0sec'
+    jk_rest_console_log_url: 'job/{{ jk_pipeline_name }}/lastBuild/timestamps?appendLog&elapsed=HH:mm:ss.S'
     jk_auth_user: 'as-ci-user.gen'
     jk_auth_password: '!Manage123'
     jk_auth_body: '<?xml version="1.0" encoding="UTF-8"?>
@@ -57,7 +58,7 @@
       dest: /var/www/html/index.html
     notify:
     - restart apache
-  - name: run pipeline {{ jk_pipeline_name }}
+  - name: run pipeline {{ jk_server_name }}/{{ jk_rest_build_url }}
     uri:
       url: "{{ jk_server_name }}/{{ jk_rest_build_url }}"
       method: POST
@@ -70,3 +71,20 @@
       force_basic_auth: yes
       status_code: 200,201
       timeout: 10
+     - name: fetch pipeline run logs 
+    uri:
+      url: "{{ jk_server_name }}/{{ jk_rest_console_log_url }}"
+      method: GET
+      headers:
+        content-Type: "application/xml"
+        authorization: "Basic YXMtY2ktdXNlci5nZW46IU1hbmFnZTEyMw=="
+      body: "{{ jk_auth_body }}"  
+      user: "{{ jk_auth_user }}"
+      password: "{{ jk_auth_password }}"
+      force_basic_auth: yes
+      status_code: 200,201
+      timeout: 10
+    register: request_run_pipe
+   - name: debug
+    debug:
+      var: request_run_pipe

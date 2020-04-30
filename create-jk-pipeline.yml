@@ -84,8 +84,9 @@
       force_basic_auth: yes
       status_code: 200,201,302
       timeout: 30
+      return_content: yes
     register: request_run_pipe
   - name: debug
     debug:
       var: request_run_pipe
-    when: request_run_pipe.status() == -1
+    when: request_run_pipe.status == 302

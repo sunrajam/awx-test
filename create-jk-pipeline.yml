@@ -3,11 +3,10 @@
   vars:
     http_port: 80
     max_clients: 200
-    jk_server_name: 'https://engci-private-blr.cisco.com'
-    jk_rest_api_url: 'jenkins/cs-apjc/job/sandbox/job/Customers/job/Rakuten/createItem?name={pipelinename}'
+    jk_server_name: 'https://engci-private-blr.cisco.com/'
+    jk_rest_api_url: 'jenkins/cs-apjc/job/sandbox/job/Customers/job/Rakuten/createItem?name=AWX_Test_Pipeline1'
     jk_auth_user: 'as-ci-user.gen'
     jk_auth_password: '!Manage123'
-    jk_request_body: 'test'
   environment:
     http_proxy: 'http://proxy.esl.cisco.com:80'
     no_proxy: 'localhost,127.0.0.0,10.127.41.162'
@@ -23,29 +22,27 @@
       src: html/after.html
       dest: /var/www/html/index.html
     notify:
-    - restart: apache
-  - name: check if vhost is present
+    - restart apache
+  - name: check if pipeline is present
     uri:
       url: "{{ jk_server_name }}/{{ jk_rest_api_url }}"
-      method: POST
+      method: GET
       user: "{{ jk_auth_user }}"
       password: "{{ jk_auth_password }}"
       force_basic_auth: yes
       status_code: 200,404
       timeout: 20
-      headers:
-        content-Type: "application/xml"
-        authorization: "Basic YXMtY2ktdXNlci5nZW46IU1hbmFnZTEyMw=="
     register: request_vhost
-    body: "{{ jk_request_body }}"
   - name: debug
     debug:
       var: request_vhost
-  - name: create vhost
+  - name: create pipeline
     uri:
       url: "{{ jk_server_name }}/{{ jk_rest_api_url }}"
       method: PUT
-      HEADER_Content-Type: "application/json"
+      headers:
+        content-Type: "application/xml"
+        authorization: "Basic YXMtY2ktdXNlci5nZW46IU1hbmFnZTEyMw=="
       user: "{{ jk_auth_user }}"
       password: "{{ jk_auth_password }}"
       force_basic_auth: yes
@@ -53,4 +50,3 @@
       timeout: 10
     when:
       - request_vhost.status == 404
- 

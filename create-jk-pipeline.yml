@@ -5,6 +5,7 @@
     max_clients: 200
     jk_server_name: 'https://engci-private-blr.cisco.com'
     jk_rest_api_url: 'jenkins/cs-apjc/job/sandbox/job/Customers/job/Rakuten/createItem?name=AWX_Test_Pipeline3'
+    jk_rest_build_url: 'build?delay=0sec'
     jk_auth_user: 'as-ci-user.gen'
     jk_auth_password: '!Manage123'
     jk_auth_body: '<?xml version="1.0" encoding="UTF-8"?>
@@ -55,10 +56,11 @@
       dest: /var/www/html/index.html
     notify:
     - restart apache
-  - name: create pipeline
+ 
+  - name: run pipeline  
     uri:
-      url: "{{ jk_server_name }}/{{ jk_rest_api_url }}"
-      method: PUT
+      url: "{{ jk_server_name }}/{{ jk_rest_api_url }}/{{ jk_rest_build_url }}"
+      method: GET
       headers:
         content-Type: "application/xml"
         authorization: "Basic YXMtY2ktdXNlci5nZW46IU1hbmFnZTEyMw=="
@@ -68,4 +70,3 @@
       force_basic_auth: yes
       status_code: 200,404
       timeout: 10
-

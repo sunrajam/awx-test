@@ -3,10 +3,42 @@
   vars:
     http_port: 80
     max_clients: 200
-    jk_server_name: 'http://10.127.41.162:8080'
-    jk_rest_api_url: '/kyc/rest/getDelayedHelloWorld/deviceId/1/delay/10'
-    jk_auth_user: 'admin'
-    jk_auth_password: 'onPrem@123'
+    jk_server_name: 'https://engci-private-blr.cisco.com'
+    jk_rest_api_url: 'jenkins/cs-apjc/job/sandbox/job/Customers/job/Rakuten/createItem?name={pipelinename}'
+    jk_auth_user: 'as-ci-user.gen'
+    jk_auth_password: '!Manage123'
+    jk_request_body: '<?xml version="1.0" encoding="UTF-8"?>
+<flow-definition plugin="workflow-job@2.6">
+    <actions/>
+    <description></description>
+    <keepDependencies>false</keepDependencies>
+    <properties>
+        <org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
+            <triggers/>
+        </org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
+    </properties>
+    <definition class="org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition" plugin="workflow-cps@2.23">
+        <scm class="hudson.plugins.git.GitSCM" plugin="git@3.0.1">
+            <configVersion>2</configVersion>
+            <userRemoteConfigs>
+                <hudson.plugins.git.UserRemoteConfig>
+                    <url>https://wwwin-github.cisco.com/AS-Internal/spade-portal.git</url>
+                    <credentialsId>53d223a9-5608-4a4a-b3a8-166e6b32d5a4</credentialsId>
+                </hudson.plugins.git.UserRemoteConfig>
+            </userRemoteConfigs>
+            <branches>
+                <hudson.plugins.git.BranchSpec>
+                    <name>*/master</name>
+                </hudson.plugins.git.BranchSpec>
+            </branches>
+            <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
+            <submoduleCfg class="list"/>
+            <extensions/>
+        </scm>
+        <scriptPath>Jenkinsfile</scriptPath>
+    </definition>
+    <triggers/>
+</flow-definition>'
   environment:
     http_proxy: 'http://proxy.esl.cisco.com:80'
     no_proxy: 'localhost,127.0.0.0,10.127.41.162'
@@ -26,13 +58,17 @@
   - name: check if vhost is present
     uri:
       url: "{{ jk_server_name }}/{{ jk_rest_api_url }}"
-      method: GET
+      method: POST
       user: "{{ jk_auth_user }}"
       password: "{{ jk_auth_password }}"
       force_basic_auth: yes
       status_code: 200,404
       timeout: 20
+      headers:
+        content-Type: "application/xml"
+        authorization: "Basic YXMtY2ktdXNlci5nZW46IU1hbmFnZTEyMw=="
     register: request_vhost
+    body: "{{ jk_request_body }}"
   - name: debug
     debug:
       var: request_vhost

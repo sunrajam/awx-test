@@ -7,8 +7,8 @@
     jk_rest_api_url: 'jenkins/cs-apjc/job/sandbox/job/Customers/job/Rakuten/createItem?name=AWX_Test_Pipeline1'
     jk_auth_user: 'as-ci-user.gen'
     jk_auth_password: '!Manage123'
-    jk_auth_body: '<?xml version=\"1.0\" encoding=\"UTF-8\"?>
-<flow-definition plugin=\"workflow-job@2.6\">
+    jk_auth_body: '<?xml version="1.0" encoding="UTF-8"?>
+<flow-definition plugin="workflow-job@2.6">
     <actions/>
     <description></description>
     <keepDependencies>false</keepDependencies>
@@ -17,8 +17,8 @@
             <triggers/>
         </org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
     </properties>
-    <definition class=\"org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition\" plugin=\"workflow-cps@2.23\">
-        <scm class=\"hudson.plugins.git.GitSCM\" plugin=\"git@3.0.1\">
+    <definition class="org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition" plugin="workflow-cps@2.23">
+        <scm class="hudson.plugins.git.GitSCM" plugin="git@3.0.1">
             <configVersion>2</configVersion>
             <userRemoteConfigs>
                 <hudson.plugins.git.UserRemoteConfig>

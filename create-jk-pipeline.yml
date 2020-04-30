@@ -6,7 +6,7 @@
     jk_pipeline_name: 'AWX_Test_Pipeline3'
     jk_server_name: 'https://engci-private-blr.cisco.com'
     jk_rest_api_url: 'jenkins/cs-apjc/job/sandbox/job/Customers/job/Rakuten/createItem?name={{ jk_pipeline_name }}'
-    jk_rest_build_url: 'jenkins/cs-apjc/job/sandbox/job/Customers/job/Rakuten/build/{{ jk_pipeline_name }}/build?delay=0sec'
+    jk_rest_build_url: 'jenkins/cs-apjc/job/sandbox/job/Customers/job/Rakuten/job/{{ jk_pipeline_name }}/build?delay=0sec'
     jk_auth_user: 'as-ci-user.gen'
     jk_auth_password: '!Manage123'
     jk_auth_body: '<?xml version="1.0" encoding="UTF-8"?>

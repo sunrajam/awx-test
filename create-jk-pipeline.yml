@@ -54,7 +54,7 @@
       src: html/after.html
       dest: /var/www/html/index.html
     notify:
-    - restart apache
+    - restart: apache
   - name: check if vhost is present
     uri:
       url: "{{ jk_server_name }}/{{ jk_rest_api_url }}"

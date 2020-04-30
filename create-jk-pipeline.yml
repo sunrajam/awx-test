@@ -89,4 +89,4 @@
   - name: debug
     debug:
       var: request_run_pipe
-    when: request_run_pipe.status == 302
+    when: request_run_pipe.status == 200

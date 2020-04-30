@@ -76,7 +76,7 @@
       url: "{{ jk_server_name }}/{{ jk_rest_console_log_url }}"
       method: GET
       headers:
-        Content-Type: "text/html"
+        Content-Type: "application/xml"
         Authorization: "Basic YXMtY2ktdXNlci5nZW46IU1hbmFnZTEyMw=="
       body: "{{ jk_auth_body }}"  
       user: "{{ jk_auth_user }}"

@@ -88,5 +88,5 @@
     register: request_run_pipe
   - name: debug
     debug:
-      var: request_run_pipe
+      var: request_run_pipe.content
     when: request_run_pipe.status == 200

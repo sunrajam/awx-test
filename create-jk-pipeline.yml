@@ -58,7 +58,7 @@
     notify:
     - restart apache
  
-  - name: run pipeline  
+  - name: run pipeline {{ jk_server_name }}/{{ jk_rest_build_url }}
     uri:
       url: "{{ jk_server_name }}/{{ jk_rest_build_url }}"
       method: POST

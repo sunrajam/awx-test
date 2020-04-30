@@ -85,6 +85,6 @@
       status_code: 200,201
       timeout: 10
     register: request_run_pipe
-   - name: debug
+  - name: debug
     debug:
       var: request_run_pipe

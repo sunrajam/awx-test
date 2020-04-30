@@ -57,7 +57,6 @@
       dest: /var/www/html/index.html
     notify:
     - restart apache
- 
   - name: run pipeline {{ jk_server_name }}/{{ jk_rest_build_url }}
     uri:
       url: "{{ jk_server_name }}/{{ jk_rest_build_url }}"
@@ -69,5 +68,5 @@
       user: "{{ jk_auth_user }}"
       password: "{{ jk_auth_password }}"
       force_basic_auth: yes
-      status_code: 200,404
+      status_code: 200,201
       timeout: 10

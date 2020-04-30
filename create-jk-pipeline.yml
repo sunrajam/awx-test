@@ -76,13 +76,13 @@
       url: "{{ jk_server_name }}/{{ jk_rest_console_log_url }}"
       method: POST
       headers:
-        Content-Type: "application/xml"
+        Content-Type: "text/html"
         Authorization: "Basic YXMtY2ktdXNlci5nZW46IU1hbmFnZTEyMw=="
       body: "{{ jk_auth_body }}"  
       user: "{{ jk_auth_user }}"
       password: "{{ jk_auth_password }}"
       force_basic_auth: yes
-      status_code: 200,201,302
+      status_code: 200,201
       timeout: 30
       return_content: yes
     register: request_run_pipe

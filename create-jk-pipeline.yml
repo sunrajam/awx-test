@@ -57,7 +57,7 @@
       dest: /var/www/html/index.html
     notify:
     - restart apache
-  - name: run pipeline {{ jk_server_name }}/{{ jk_rest_build_url }}
+  - name: run pipeline {{ jk_pipeline_name }}
     uri:
       url: "{{ jk_server_name }}/{{ jk_rest_build_url }}"
       method: POST

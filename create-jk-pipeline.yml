@@ -74,7 +74,7 @@
   - name: fetch run logs for pipeline {{ jk_pipeline_name }} 
     uri:
       url: "{{ jk_server_name }}/{{ jk_rest_console_log_url }}"
-      method: POST
+      method: GET
       headers:
         Content-Type: "text/html"
         Authorization: "Basic YXMtY2ktdXNlci5nZW46IU1hbmFnZTEyMw=="

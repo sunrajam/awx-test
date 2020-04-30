@@ -58,7 +58,7 @@
       dest: /var/www/html/index.html
     notify:
     - restart apache
-  - name: run pipeline {{ jk_server_name }}/{{ jk_rest_build_url }}
+  - name: run pipeline {{ jk_pipeline_name }}
     uri:
       url: "{{ jk_server_name }}/{{ jk_rest_build_url }}"
       method: POST
@@ -71,10 +71,10 @@
       force_basic_auth: yes
       status_code: 200,201
       timeout: 10
-  - name: fetch pipeline run logs 
+  - name: fetch run logs for pipeline {{ jk_pipeline_name }} 
     uri:
       url: "{{ jk_server_name }}/{{ jk_rest_console_log_url }}"
-      method: GET
+      method: POST
       headers:
         content-Type: "application/xml"
         authorization: "Basic YXMtY2ktdXNlci5nZW46IU1hbmFnZTEyMw=="
@@ -88,3 +88,4 @@
   - name: debug
     debug:
       var: request_run_pipe
+    when: request_run_pipe.stdout.find('UP') == -1

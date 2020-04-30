@@ -41,7 +41,7 @@
 </flow-definition>'
   environment:
     http_proxy: 'http://proxy.esl.cisco.com:80'
-    no_proxy: 'localhost,127.0.0.0,10.127.41.162'
+    no_proxy: 'localhost,127.0.0.0,10.127.41.162,engci-private-blr.cisco.com'
     https_proxy: 'http://proxy.esl.cisco.com:80'
   remote_user: root
   tasks:

@@ -76,16 +76,16 @@
       url: "{{ jk_server_name }}/{{ jk_rest_console_log_url }}"
       method: POST
       headers:
-        content-Type: "application/xml"
-        authorization: "Basic YXMtY2ktdXNlci5nZW46IU1hbmFnZTEyMw=="
+        Content-Type: "application/xml"
+        Authorization: "Basic YXMtY2ktdXNlci5nZW46IU1hbmFnZTEyMw=="
       body: "{{ jk_auth_body }}"  
       user: "{{ jk_auth_user }}"
       password: "{{ jk_auth_password }}"
       force_basic_auth: yes
-      status_code: 200,201
-      timeout: 10
+      status_code: 200,201,302
+      timeout: 30
     register: request_run_pipe
   - name: debug
     debug:
       var: request_run_pipe
-    when: request_run_pipe.stdout.find('UP') == -1
+    when: request_run_pipe.status() == -1

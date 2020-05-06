@@ -47,10 +47,6 @@
     no_proxy: 'localhost,127.0.0.0,10.127.41.162,engci-private-blr.cisco.com'
     https_proxy: 'http://proxy.esl.cisco.com:80'
   remote_user: root
-  vars_prompt:
-  - name: "release_version"
-    prompt: "Product release version"
-    default: "1.0"
   tasks:
   - name: ensure apache is at the latest version
     yum:

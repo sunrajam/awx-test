@@ -1,0 +1,96 @@
+---
+- hosts: all
+  vars:
+    http_port: 80
+    max_clients: 200
+    jk_pipeline_name: 'AWX_Test_Pipeline3'
+    jk_server_name: 'https://engci-private-blr.cisco.com/jenkins/cs-apjc/job/sandbox/job/Customers/job/Rakuten'
+    jk_rest_api_url: 'createItem?name={{ jk_pipeline_name }}'
+    jk_rest_build_url: 'job/{{ jk_pipeline_name }}/build?delay=0sec'
+    jk_rest_console_log_url: 'job/{{ jk_pipeline_name }}/lastBuild/timestamps?appendLog&elapsed=HH:mm:ss.S'
+    jk_auth_user: 'as-ci-user.gen'
+    jk_auth_password: '!Manage123'
+    jk_auth_body: '<?xml version="1.0" encoding="UTF-8"?>
+<flow-definition plugin="workflow-job@2.6">
+    <actions/>
+    <description></description>
+    <keepDependencies>false</keepDependencies>
+    <properties>
+        <org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
+            <triggers/>
+        </org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
+    </properties>
+    <definition class="org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition" plugin="workflow-cps@2.23">
+        <scm class="hudson.plugins.git.GitSCM" plugin="git@3.0.1">
+            <configVersion>2</configVersion>
+            <userRemoteConfigs>
+                <hudson.plugins.git.UserRemoteConfig>
+                    <url>https://wwwin-github.cisco.com/AS-Internal/spade-portal.git</url>
+                    <credentialsId>53d223a9-5608-4a4a-b3a8-166e6b32d5a4</credentialsId>
+                </hudson.plugins.git.UserRemoteConfig>
+            </userRemoteConfigs>
+            <branches>
+                <hudson.plugins.git.BranchSpec>
+                    <name>*/master</name>
+                </hudson.plugins.git.BranchSpec>
+            </branches>
+            <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
+            <submoduleCfg class="list"/>
+            <extensions/>
+        </scm>
+        <scriptPath>Jenkinsfile</scriptPath>
+    </definition>
+    <triggers/>
+</flow-definition>'
+  environment:
+    http_proxy: 'http://proxy.esl.cisco.com:80'
+    no_proxy: 'localhost,127.0.0.0,10.127.41.162,engci-private-blr.cisco.com'
+    https_proxy: 'http://proxy.esl.cisco.com:80'
+  remote_user: root
+  vars_prompt:
+  - name: "release_version"
+    prompt: "Product release version"
+    default: "1.0"
+  tasks:
+  - name: ensure apache is at the latest version
+    yum:
+      name: httpd
+      state: latest
+  - name: write the apache index  file
+    template:
+      src: html/after.html
+      dest: /var/www/html/index.html
+    notify:
+    - restart apache
+  - name: run pipeline {{ jk_pipeline_name }}
+    uri:
+      url: "{{ jk_server_name }}/{{ jk_rest_build_url }}"
+      method: POST
+      headers:
+        content-Type: "application/xml"
+        authorization: "Basic YXMtY2ktdXNlci5nZW46IU1hbmFnZTEyMw=="
+      body: "{{ jk_auth_body }}"  
+      user: "{{ jk_auth_user }}"
+      password: "{{ jk_auth_password }}"
+      force_basic_auth: yes
+      status_code: 200,201
+      timeout: 10
+  - name: fetch run logs for pipeline {{ jk_pipeline_name }} 
+    uri:
+      url: "{{ jk_server_name }}/{{ jk_rest_console_log_url }}"
+      method: GET
+      headers:
+        Content-Type: "application/xml"
+        Authorization: "Basic YXMtY2ktdXNlci5nZW46IU1hbmFnZTEyMw=="
+      body: "{{ jk_auth_body }}"  
+      user: "{{ jk_auth_user }}"
+      password: "{{ jk_auth_password }}"
+      force_basic_auth: yes
+      status_code: 200,201
+      timeout: 30
+      return_content: yes
+    register: request_run_pipe
+  - name: debug
+    debug:
+      var: request_run_pipe.content
+    when: request_run_pipe.status == 200

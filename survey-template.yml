@@ -10,6 +10,7 @@
     jk_rest_console_log_url: 'job/{{ jk_pipeline_name }}/lastBuild/timestamps?appendLog&elapsed=HH:mm:ss.S'
     jk_auth_user: 'as-ci-user.gen'
     jk_auth_password: '!Manage123'
+    pass_variable: ''
     jk_auth_body: '<?xml version="1.0" encoding="UTF-8"?>
 <flow-definition plugin="workflow-job@2.6">
     <actions/>
@@ -47,10 +48,6 @@
     no_proxy: 'localhost,127.0.0.0,10.127.41.162,engci-private-blr.cisco.com'
     https_proxy: 'http://proxy.esl.cisco.com:80'
   remote_user: root
-  vars_prompt:
-  - name: "release_version"
-    prompt: "Product release version"
-    default: "1.0"
   tasks:
   - name: ensure apache is at the latest version
     yum:
@@ -93,4 +90,5 @@
   - name: debug
     debug:
       var: request_run_pipe.content
+      var: pass_variable
     when: request_run_pipe.status == 200

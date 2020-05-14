@@ -7,5 +7,9 @@
     shell: echo "Hi! Tower is working!"
     shell: echo "Waiting for 30 seconds"
   - pause:
-    seconds: 30
+    minutes: 30
     shell: echo "Wait over"
+    register: result
+- debug:
+    var: result
+    verbosity: 2

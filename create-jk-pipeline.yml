@@ -58,7 +58,7 @@
       dest: /var/www/html/index.html
     notify:
     - restart apache
-  - name: create pipeline
+  - name: create pipeline {{ jk_pipeline_name }} 
     uri:
       url: "{{ jk_server_name }}/{{ jk_rest_api_url }}"
       method: PUT

@@ -5,7 +5,7 @@
   tasks:
   - name: Hello World!
     shell: echo "Hi! Tower is working!"
-    prompt: "Waiting for 30 seconds"
+    shell: echo "Waiting for 30 seconds"
   - pause:
     seconds: 30
-    prompt: "Wait over"
+    shell: echo "Wait over"

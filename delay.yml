@@ -1,13 +1,13 @@
 ---
 - hosts: all
   vars:
-    delay: 30
+    delay_time: 30
   tasks:
     - name: check date
       command: date
       register: out
     - debug: msg={{out.stdout}}
-    - pause: seconds={{ delay }}
+    - pause: seconds={{ delay_time }}
     - name: check date
       command: date
       register: out

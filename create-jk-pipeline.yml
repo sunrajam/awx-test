@@ -4,7 +4,7 @@
     http_port: 80
     max_clients: 200
     jk_pipeline_name: 'AWX_Test_Pipeline3'
-    jk_server_name: 'https://engci-private-blr.cisco.com/jenkins/cs-apjc/job/sandbox/job/Customers/job/Rakuten'
+    jk_server_name: 'http://10.76.155.118:8080/'  
     jk_rest_api_url: 'createItem?name={{ jk_pipeline_name }}'
     jk_rest_build_url: 'job/{{ jk_pipeline_name }}/build?delay=0sec'
     jk_rest_console_log_url: 'job/{{ jk_pipeline_name }}/lastBuild/timestamps?appendLog&elapsed=HH:mm:ss.S'

@@ -3,7 +3,7 @@
   vars:
     http_port: 80
     max_clients: 200
-    jk_pipeline_name: 'AWX_Test_Pipeline3'
+    jk_pipeline_name: 'AWX_Test_Pipeline4'
     jk_server_name: 'http://10.76.155.118:8080/'  
     jk_rest_api_url: 'createItem?name={{ jk_pipeline_name }}'
     jk_rest_build_url: 'job/{{ jk_pipeline_name }}/build?delay=0sec'
@@ -58,6 +58,24 @@
       dest: /var/www/html/index.html
     notify:
     - restart apache
+  - name: create pipeline
+    uri:
+      url: "{{ jk_server_name }}/{{ jk_rest_api_url }}"
+      method: PUT
+      headers:
+        content-Type: "application/xml"
+        authorization: "Basic YXMtY2ktdXNlci5nZW46IU1hbmFnZTEyMw=="
+      body: "{{ jk_auth_body }}"
+      user: "{{ jk_auth_user }}"
+      password: "{{ jk_auth_password }}"
+      force_basic_auth: yes
+      status_code: 200,404
+      timeout: 10
+    register: request_create_pipe
+  - name: debug
+    debug:
+      var: request_create_pipe
+      
   - name: run pipeline {{ jk_pipeline_name }}
     uri:
       url: "{{ jk_server_name }}/{{ jk_rest_build_url }}"

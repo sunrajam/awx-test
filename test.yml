@@ -1,15 +1,12 @@
----
-
-- name: Hello World!
-  hosts: all
-  tasks:
-  - name: Hello World!
-    shell: echo "Hi! Tower is working!"
-    shell: echo "Waiting for 30 seconds"
-  - pause:
-    minutes: 30
-    shell: echo "Wait over"
-    register: result
-- debug:
-    var: result
-    verbosity: 2
+  ---
+  - hosts: all
+    tasks:
+      - name: check date
+        command: date
+        register: out
+      - debug: msg={{out.stdout}}
+      - pause: seconds=3
+      - name: check date
+        command: date
+        register: out
+      - debug: msg={{out.stdout}}

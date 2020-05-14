@@ -1,12 +1,12 @@
-  ---
-  - hosts: localhost
-    tasks:
-      - name: check date
-        command: date
-        register: out
-      - debug: msg={{out.stdout}}
-      - pause: seconds=3
-      - name: check date
-        command: date
-        register: out
-      - debug: msg={{out.stdout}}
+---
+- hosts: localhost
+  tasks:
+    - name: check date
+      command: date
+      register: out
+    - debug: msg={{out.stdout}}
+    - pause: seconds=3
+    - name: check date
+      command: date
+      register: out
+    - debug: msg={{out.stdout}}

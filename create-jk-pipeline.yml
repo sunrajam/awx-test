@@ -8,8 +8,8 @@
     jk_rest_api_url: 'createItem?name={{ jk_pipeline_name }}'
     jk_rest_build_url: 'job/{{ jk_pipeline_name }}/build?delay=0sec'
     jk_rest_console_log_url: 'job/{{ jk_pipeline_name }}/lastBuild/timestamps?appendLog&elapsed=HH:mm:ss.S'
-    jk_auth_user: 'as-ci-user.gen'
-    jk_auth_password: '!Manage123'
+    jk_auth_user: 'admin-user'
+    jk_auth_password: '!Cisco123'
     jk_auth_body: '<?xml version="1.0" encoding="UTF-8"?>
 <flow-definition plugin="workflow-job@2.6">
     <actions/>

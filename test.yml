@@ -6,3 +6,7 @@
   - name: Hello World!
     shell: echo "Hi! Tower is working!"
     check_mode: yes
+  - pause:
+    prompt: "Waiting for 30 seconds"
+    seconds: 30
+    prompt: "Wait over"
